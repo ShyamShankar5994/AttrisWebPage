@@ -535,7 +535,7 @@ header .is-sticky nav.navbar .navbar-morki ul.nav li.active ul li a {
 	font-weight:500;
 	margin-bottom: 15px;
 }
-.intro .intro-info .intro-info-content span.caution{color:#fff; font-style:; display:block; margin-bottom:5px;}
+.intro .intro-info .intro-info-content span.caution{color:#fff; font-style: normal; display:block; margin-bottom:5px;}
 .intro .intro-info .intro-info-content a.ext-link{color:inherit;}
 .intro .intro-info .intro-info-content a.ext-link:hover{text-decoration:underline;}
 
@@ -588,6 +588,22 @@ header .is-sticky nav.navbar .navbar-morki ul.nav li.active ul li a {
 }
 .services .service-box:hover a {
     color: #ef494d;
+}
+.services .service-btn{
+    text-align: center;
+    margin-top: 80px;
+}
+.services .service-btn a {
+    display: inline-block;
+    padding: 15px 45px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #ef494d;
+    color: #fff;
+    border-radius: 3px;
+}
+.services .service-btn a:hover {
+    background: #333;
 }
 
 
