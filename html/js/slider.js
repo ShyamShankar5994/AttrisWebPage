@@ -1,89 +1,54 @@
-/*
-  Author : Sebastien Koss
-  Copyright © 2016 All rights reserved. 
-*/
+  // CAROUSEL PLUGIN DEFINITION
+  // ==========================
 
-var effects = ["bounceInDown", "fadeIn", "zoomIn", "zoomInUp", "zoomInLeft", "zoomInRight", "zoomInDown", "fadeInLeft", "fadeInRight", "flipInX", "flipInY", "lightSpeedIn", "rotateInDownLeft", "rotateInDownRight", "rotateInUpLeft", "rotateInUpRight", "slideInLeft", "slideInRight", "rubberBand"];
+  var old = $.fn.carousel
 
-$.each(effects, function(i, v) {
-    $("#singleEffect").append("<option>" + v + "</option>");
-});
+  $.fn.carousel = function (option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.carousel')
+      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var action  = typeof option == 'string' ? option : options.slide
 
-$("select#singleEffect").on('change', function (e) {
-    $("#random").attr('checked', false);
-    var optionSelected = $("option:selected", this);
-    var valueSelected = optionSelected.html();
-})
-
-function nextSlide() {
-    if ($(".random").is(':checked')) {
-        var effect = effects[Math.floor(Math.random() * effects.length)];
-        if (effect == $(".effect").html(effect)) {
-          var effect = effects[Math.floor(Math.random() * effects.length)];
-        }
-    } else {
-        var effect = $("select#singleEffect option:selected").text();
-    }
-  
-    $.each(effects, function(i, v) {
-        $(".slide").removeClass(v)
-    });
-  
-    var nextSlide = $('ul#slider li.slide.show');
-    var classNames = effect + " animated show";
-    nextSlide.removeClass(classNames);
-  
-    if (nextSlide.next().length) {
-        nextSlide.next().addClass(classNames)
-    } else {
-        $('ul#slider li.slide:first').addClass(classNames)
-    }
-     
-    $.each($("#singleEffect option"), function() {
-        if (effect == $(this).html()) {
-          $(this).attr('selected','selected');
-        } else {
-          $(this).removeAttr("selected");
-        }
-    });    
-    $(".effect").html(effect);
-  
-    FPSMeter.run();
-    if (!window.FPSMeter) {
-        $(".frames").html("Your browser doesn't seem to be compatible with this test.")
-    } else {
-        document.addEventListener("fps", function(evt) {
-            $(".frames").html(evt.fps + " fps")
-        }, false)
-    }
-}
-
-setInterval(nextSlide, '3500');
-
-$(".buttonOC").click(function(){
-  if ($(this).is(".open")) {
-    $(this).animate({
-      left: "-=350"
-    }, 500, function() {
-      $(".controls").animate({
-        left: "-=250"
-      }, 500);
-      $(this).html("<h2>Settings <span>&raquo;</span></h2>").removeClass("open").animate({
-        left: "+=350",
-        top: "-=108"
-      }, 500);
-    });
-  } else {
-    $(this).animate({
-      left: "-=100"
-    }, 500, function() {
-      $(".controls").animate({
-        left: "+=250"
-      }, 500);
-      $(this).html("&laquo; Close").addClass("open").animate({
-        left: "+=100",
-        top: "+=108"
-      }, 500);
-    });
+      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
+      if (typeof option == 'number') data.to(option)
+      else if (action) data[action]()
+      else if (options.interval) data.pause().cycle()
+    })
   }
-});
+
+  $.fn.carousel.Constructor = Carousel
+
+
+  //Carousels
+	$('.carousel').carousel({
+		interval: 5000,
+		pause	: 'hover'
+  });
+  
+
+   // CAROUSEL DATA-API
+  // =================
+
+  $(document).on('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
+    var $this   = $(this), href
+    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) //strip for ie7
+    var options = $.extend({}, $target.data(), $this.data())
+    var slideIndex = $this.attr('data-slide-to')
+    if (slideIndex) options.interval = false
+
+    $target.carousel(options)
+
+    if (slideIndex = $this.attr('data-slide-to')) {
+      $target.data('bs.carousel').to(slideIndex)
+    }
+
+    e.preventDefault()
+  })
+
+  $(window).on('load', function () {
+    $('[data-ride="carousel"]').each(function () {
+      var $carousel = $(this)
+      $carousel.carousel($carousel.data())
+    })
+  })

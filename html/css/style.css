@@ -628,7 +628,10 @@ header .is-sticky nav.navbar .navbar-morki ul.nav li.active ul li a {
     margin-left: -25px;
 }
 
-
+.carousel {
+    position: relative;
+  }
+  
 /* About App */
 .about-app {
     padding: 120px 0;
