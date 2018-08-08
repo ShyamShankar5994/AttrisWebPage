@@ -631,6 +631,14 @@ header .is-sticky nav.navbar .navbar-morki ul.nav li.active ul li a {
 .carousel {
     position: relative;
   }
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
   
 /* About App */
 .about-app {
